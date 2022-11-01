@@ -796,4 +796,6 @@ cursor: pointer;
   cursor: pointer;
 }
 
-.test{}
+.test{
+  width:50px;
+}

@@ -1,0 +1,64 @@
+/* html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+} */
+
+#viewDiv {
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+    height: 35%;
+    width: 100%;
+}
+/* #viewDiv:focus{
+  border:none;
+  outline:none
+} */
+#custom-div{
+    height: 70%;
+    width: 200px;
+    background-color: white;
+    border: 1px solid black;
+    /* border-radius:10px; */
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 5px black;
+}
+#custom-div{
+    text-align: right;
+}
+.custom-div-header
+{
+    width: 100%;
+    height: 20%;
+    background-color: rgb(75, 95, 185);
+    color: white;
+}
+
+/* scroll bar */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(75, 95, 185);
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(64, 4, 177);
+  }
+

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/@esri/arcgis-rest-request@4.0.0/dist/bundled/request.umd.js"></script>
+    <script src="https://unpkg.com/@esri/arcgis-rest-feature-service@4.0.0/dist/bundled/feature-service.umd.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/4.2/dijit/themes/claro/claro.css"> -->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.23/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.23/"></script>
+    <!-- <script src="/src/js/arcgis/4.23/"></script> -->
+    <!-- leaflet -->
+    <!-- <script src="src/js/leaflet-routing-machine-3.2.12/dist/leaflet-routing-machine.js"></script> -->
+    <!-- <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script> -->
+    <!-- jquery -->
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+    <!-- local files -->
+    <link rel="stylesheet" href="src/css/dashboard.css">
+    <link rel="stylesheet" href="src/css/mapContorols.css">
+	<link rel="stylesheet" href="src/css/tabs.css">
+    <script src="src/js/esriRequires.js"></script>
+    <!-- <script src="src/js/map.js"></script> -->
+    
+
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="src/css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="src/css/style.css"> <!-- Resource style -->
+	<script src="src/js/modernizr.js"></script> <!-- Modernizr -->
+  	
+	<title>MOJ | Web Map</title>
+</head>
+<body> 
+	
+	<div class="loader-container">
+		<!-- <hr/><hr/><hr/><hr/> -->
+		<span class="loader"></span>
+	</div>
+	<!-- spinner -->
+	<!-- <div class="lds-dual-ring" id="spinner"></div> -->
+	<main class="cd-main-content" style="height:100%">
+		<div class="cd-tab-filter-wrapper">
+			<div class="cd-tab-filter">
+				<ul class="cd-filters">
+					<!-- <li class="filter"> 
+						<a data-type="all" href="#0">الكل</a> 
+					</li> -->
+					<li class="filter"><a class="selected" href="#0" data-type="all">الخريطة</a></li>
+					<!-- <li class="filter" data-filter=".color-1"><a href="#0" data-type="color-1">Color 1</a></li>
+					<li class="filter" data-filter=".color-2"><a href="#0" data-type="color-2">Color 2</a></li> -->
+				</ul> <!-- cd-filters -->
+			</div> <!-- cd-tab-filter -->
+		</div> <!-- cd-tab-filter-wrapper -->
+
+		<section class="cd-gallery" style="height:55%; width:100%;">
+            <div id="viewDiv"  class="cd-gallery" style="height:100%; width:100%;"></div>
+			<div id="editorDiv">
+			</div> 
+		</section> <!-- cd-gallery -->
+        <!-- <div id="filter-choice">
+            <label for="filter-choice-label">choose: </label>
+      
+            <select name="filter-choice-list" id="filter-choice-list">
+            </select>
+          </div> -->
+          <!-- <div id="custom-div">
+            <div class="custom-div-header">حالة الإعلان</div>
+          </div> -->
+		  <!-- <div style="padding:10px;" id="editorDiv"> -->
+        </div>
+      
+          <!-- start measure widget -->
+          <div id="toolbarDiv" class="esri-component esri-widget">
+              <button id="distance" class="esri-widget--button esri-interactive esri-icon-measure-line" title="Distance Measurement Tool">
+              </button>
+              <button id="area" class="esri-widget--button esri-interactive esri-icon-measure-area" title="Area Measurement Tool">
+              </button>
+              <button id="clear" class="esri-widget--button esri-interactive esri-icon-trash" title="Clear Measurements">
+              </button>
+          </div>
+          <!-- end measure widget -->
+        <!-- table widget -->
+        <!-- <div class="container">
+			<div id="tableDiv" ></div>
+        </div> -->
+
+		<!-- Tab links -->
+	<div class="tab">
+		<button id="button1" class="tablinks" onclick="openCity(event, 'tab1')">جدول البيانات</button>
+		<button id="button2" class="tablinks" onclick="openCity(event, 'tab2')">اخر تحديث</button>
+		
+	</div>
+	
+	<!-- Tab content -->
+	<div id="tab1" class="tabcontent container">
+		<!-- <div class="container"> -->
+			<div id="tableDiv" ></div>
+        <!-- </div> -->
+	</div>
+	
+	<div id="tab2" class="tabcontent container">
+		<div id="last_update" ></div>
+	</div>
+	
+	
+
+        <div id="result-update"></div>
+        <div id="result-add"></div>
+        <div id="result-delete"></div>
+        
+		<div class="cd-filter">
+			<form>
+				<div class="cd-filter-block">
+					<h4>بحث</h4>
+					
+					<div class="cd-filter-content">
+						<input id="search-filter" type="search" placeholder="ادخل كلمة البحث">
+                        <h5 id="search-status-lable"></h5>
+					</div> <!-- cd-filter-content -->
+				</div> <!-- cd-filter-block -->
+
+				<div class="cd-filter-block">
+					<h4>حالة الإعلان</h4>
+
+					<ul class="cd-filter-content cd-filters list type-list">
+                        <!-- types will go here -->
+					</ul> <!-- cd-filter-content -->
+				</div> <!-- cd-filter-block -->
+
+				<div class="cd-filter-block">
+					<h4>إسم المحضر</h4>
+					
+					<div class="cd-filter-content">
+						<div class="cd-select cd-filters">
+							<select class="filter" id="worker-list" name="selectThis" id="selectThis">
+								<option value="">عرض الكل</option>
+							</select>
+						</div> <!-- cd-select -->
+					</div> <!-- cd-filter-content -->
+				</div> <!-- cd-filter-block -->
+
+				<div class="cd-filter-block">
+					<h4>Radio buttons</h4>
+
+					<ul class="cd-filter-content cd-filters list">
+						<li>
+							<input class="filter" data-filter="" type="radio" name="radioButton" id="radio1" checked>
+							<label class="radio-label" for="radio1">All</label>
+						</li>
+
+						<li>
+							<input class="filter" data-filter=".radio2" type="radio" name="radioButton" id="radio2">
+							<label class="radio-label" for="radio2">Choice 2</label>
+						</li>
+
+						<li>
+							<input class="filter" data-filter=".radio3" type="radio" name="radioButton" id="radio3">
+							<label class="radio-label" for="radio3">Choice 3</label>
+						</li>
+					</ul> <!-- cd-filter-content -->
+				</div> <!-- cd-filter-block -->
+			</form>
+
+			<a href="#0" class="cd-close">إغلق</a>
+		</div> <!-- cd-filter -->
+
+		<a href="#0" class="cd-filter-trigger">فلتر</a>
+	</main> <!-- cd-main-content -->
+	
+
+	<script src="src/js/map.js"></script>
+    <script src="src/js/preloader.js"></script>
+    <script src="src/js/layerList.js"></script>
+    <script src="src/js/featureTable.js"></script>
+    <script src="src/js/mapContorols.js"></script>
+    <script src="src/js/server.conf.js"></script>
+    <script src="src/js/generateToken.js"></script>
+    <script src="src/js/getFields.js"></script>
+    <script src="src/js/featureFilter.js"></script>
+    <script src="src/js/featureFilter_v1.js"></script>
+    <script src="src/js/geoCode.js"></script>
+    <script src="src/js/layer.js"></script>
+	<script src="src/js/tabs.js"></script>
+	<script src="src/js/popup.js"></script>
+	<!-- <script src="src/js/point_edit.js"></script> -->
+	<script src="src/js/last_updated_table.js"></script>  
+	<script src="src/js/esriRequires.js"></script> 
+    <script src="src/js/filterUIHandler.js"></script>    
+    <script src="src/js/selectedFeaturesModal.js"></script>
+	<script src="src/js/editFeatureLayer.js"></script>
+	<!-- <script src="src/js/point_edit.js"></script>     -->
+    <!-- <script src="src/js/jquery-2.1.1.js"></script> -->
+    <script src="src/js/jquery.mixitup.min.js"></script>
+    <script src="src/js/main.js"></script> <!-- Resource jQuery -->
+</body>
+</html>

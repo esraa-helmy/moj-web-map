@@ -789,11 +789,9 @@ cursor: pointer;
   color: #e6e6e6;
   font-size: 15px;
   border-radius: 4px;
-  text-align: center;
-  
+  text-align: center; 
 }
 #close-edit:hover{
   background-color: #e15f79;
   cursor: pointer;
-
 }
